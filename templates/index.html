@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lithothamnium Brasil | Aplicações e Notícias</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+    <!-- Navbar -->
+    <nav class="bg-green-700 text-white shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold tracking-wider">Lithothamnium<span class="text-green-300">BR</span></h1>
+            <ul class="flex space-x-6 font-semibold">
+                <li><a href="#" class="hover:text-green-300 transition">Início</a></li>
+                <li><a href="#aplicacoes" class="hover:text-green-300 transition">Aplicações</a></li>
+                <li><a href="#artigos" class="hover:text-green-300 transition">Artigos do Mês</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');">
+        <!-- Overlay escuro para garantir a leitura do texto -->
+        <div class="absolute inset-0 bg-black bg-opacity-60"></div>
+        
+        <div class="relative max-w-6xl mx-auto px-4 py-24 text-center z-10">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-4">O Poder do Lithothamnium na Agricultura</h2>
+            <p class="text-lg text-gray-200 mb-8 max-w-3xl mx-auto">
+                Confira a curadoria exclusiva do editor do Lithothamnium.org com os melhores artigos científicos e aplicações práticas sobre algas marinhas calcárias. Lista atualizada mensalmente.
+            </p>
+            <a href="#artigos" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full transition shadow-lg">
+                Ver Artigos do Mês
+            </a>
+        </div>
+    </header>
+
+    <!-- Aplicações (Solo e Fertirrigação) -->
+    <section id="aplicacoes" class="py-16 bg-green-50">
+        <div class="max-w-6xl mx-auto px-4">
+            <h3 class="text-3xl font-bold text-center text-green-800 mb-10">Aplicações Agrícolas</h3>
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Card Solo -->
+                <div class="bg-white p-8 rounded-lg shadow hover:shadow-md transition border-t-4 border-green-600">
+                    <h4 class="text-2xl font-bold text-gray-800 mb-3">Aplicação via Solo</h4>
+                    <p class="text-gray-600 mb-4">
+                        O Lithothamnium atua como um excelente condicionador biológico e corretivo de acidez. Devido à sua estrutura microporosa, oferece altíssima reatividade, disponibilizando Cálcio (Ca) e Magnésio (Mg) de forma rápida e estimulando a microbiota benéfica do solo.
+                    </p>
+                </div>
+                <!-- Card Fertirrigação -->
+                <div class="bg-white p-8 rounded-lg shadow hover:shadow-md transition border-t-4 border-blue-500">
+                    <h4 class="text-2xl font-bold text-gray-800 mb-3">Via Fertirrigação</h4>
+                    <p class="text-gray-600 mb-4">
+                        Utilizado em suspensões concentradas e formulações micronizadas (pó solúvel). É ideal para fertirrigação por não entupir gotejadores, garantindo absorção radicular ou foliar imediata de nutrientes orgânicos, aminoácidos e minerais.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Artigos do Mês -->
+    <section id="artigos" class="py-16 bg-white">
+        <div class="max-w-6xl mx-auto px-4">
+            <h3 class="text-3xl font-bold text-green-800 mb-2">Artigos do Mês: Escolhas do Editor</h3>
+            <p class="text-gray-600 mb-10">Nossa curadoria seleciona mensalmente os melhores estudos, pesquisas e aplicações práticas do Lithothamnium para enriquecer seu conhecimento no agronegócio.</p>
+            
+            <!-- Grid de Pesquisas -->
+            <div class="grid md:grid-cols-3 gap-6">
+                {% for pesquisa in pesquisas %}
+                <article class="border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col bg-white">
+                    <img src="{{ pesquisa.imagem }}" alt="Capa do Artigo" class="w-full h-48 object-cover object-top border-b border-gray-200">
+                    <div class="p-5 flex flex-col flex-grow">
+                        <h4 class="text-lg font-bold text-gray-800 mb-2 leading-snug">{{ pesquisa.titulo }}</h4>
+                        <p class="text-xs text-green-700 font-semibold mb-3">{{ pesquisa.autores }}</p>
+                        <div class="text-gray-600 text-sm mb-5 flex-grow line-clamp-4">
+                            {{ pesquisa.resumo }}
+                        </div>
+                        <a href="/artigo/{{ pesquisa.id }}" class="text-blue-600 font-semibold hover:underline mt-auto">Ler artigo completo no site &rarr;</a>
+                    </div>
+                </article>
+                {% else %}
+                <div class="col-span-3 text-center py-8">
+                    <p class="text-gray-600">Nenhum artigo selecionado para este mês ainda. Faça o upload dos PDFs e execute o script para atualizar a lista.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-400 py-6 text-center">
+        <p>&copy; 2026 Lithothamnium Brasil. Todos os direitos reservados.</p>
+    </footer>
+
+</body>
+</html>

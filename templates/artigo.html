@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ pesquisa.titulo }} | Lithothamnium Brasil</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <nav class="bg-green-700 text-white shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="/" class="text-2xl font-bold tracking-wider hover:text-green-300 transition">Lithothamnium<span class="text-green-300">BR</span></a>
+            <a href="/" class="font-semibold hover:text-green-300 transition">&larr; Voltar ao Início</a>
+        </div>
+    </nav>
+
+    <!-- Conteúdo Central do Artigo -->
+    <main class="flex-grow w-full max-w-4xl mx-auto px-4 py-12">
+        <article class="bg-white p-8 md:p-12 rounded-lg shadow-md border-t-4 border-green-600">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6 leading-tight">{{ pesquisa.titulo }}</h1>
+            
+            <div class="text-sm text-gray-500 mb-8 border-b border-gray-200 pb-6">
+                <p class="font-semibold mb-1 text-green-700">Fonte Original e Autoria:</p>
+                <p>{{ pesquisa.autores }}</p>
+                <p class="mt-2 text-xs">Indexado no portal em: {{ pesquisa.data_coleta }}</p>
+            </div>
+
+            <!-- Aqui injetamos o texto gerado e salvo pelo Python -->
+            <div class="prose max-w-none text-gray-700 text-lg leading-relaxed mb-10">
+                {{ pesquisa.conteudo | safe }}
+            </div>
+
+            <!-- Call to Action para acessar documento completo (PDF / Original) -->
+            <div class="bg-gray-100 p-8 rounded-lg text-center border border-gray-200 mt-12">
+                <p class="text-gray-800 mb-4 font-semibold">Tem interesse nas metodologias e resultados completos deste estudo?</p>
+                <a href="{{ pesquisa.link_original }}" target="_blank" rel="noopener noreferrer" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition shadow-md">
+                    Acessar Arquivo PDF Completo
+                </a>
+            </div>
+        </article>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-400 py-6 text-center mt-auto">
+        <p>&copy; 2026 Lithothamnium Brasil. Todos os direitos reservados.</p>
+    </footer>
+
+</body>
+</html>
