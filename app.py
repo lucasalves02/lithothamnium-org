@@ -9,16 +9,13 @@ app = Flask(__name__)
 def conectar_banco():
     diretorio_atual = os.path.dirname(os.path.abspath(__file__))
     caminho_banco_original = os.path.join(diretorio_atual, 'pesquisas.db')
-    caminho_banco_tmp = '/tmp/pesquisas.db'
     
     # 1. Verifica se o banco de dados realmente subiu para o GitHub/Vercel
     if not os.path.exists(caminho_banco_original):
         raise FileNotFoundError("ERRO FATAL: O arquivo pesquisas.db nao foi encontrado! Ele provavelmente nao foi enviado para o GitHub.")
         
-    # 2. Copia o banco para a pasta /tmp da Vercel (único local onde o SQLite tem total liberdade)
-    shutil.copy2(caminho_banco_original, caminho_banco_tmp)
-    
-    conn = sqlite3.connect(caminho_banco_tmp)
+    # 2. Conecta diretamente no banco original (a Vercel permite leitura sem problemas)
+    conn = sqlite3.connect(caminho_banco_original)
     
     conn.row_factory = sqlite3.Row 
     return conn
