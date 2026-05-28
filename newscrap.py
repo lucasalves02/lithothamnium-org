@@ -6,6 +6,7 @@ import PyPDF2
 from deep_translator import GoogleTranslator
 import re
 import fitz  # Importa a biblioteca PyMuPDF
+import unicodedata
 
 # 1. Configurar o Banco de Dados (SQLite)
 def configurar_banco_de_dados():
@@ -56,8 +57,12 @@ def processar_pdfs_locais(conn):
     pesquisas_salvas = 0
 
     for arquivo in arquivos_pdf:
+        # Gera um nome de arquivo seguro para a web (Vercel/Linux)
+        nome_seguro = ''.join(c for c in unicodedata.normalize('NFD', arquivo) if unicodedata.category(c) != 'Mn')
+        nome_seguro = re.sub(r'[^a-zA-Z0-9.\-]', '_', nome_seguro)
+
         caminho_pdf_entrada = os.path.join(pasta_entrada, arquivo)
-        caminho_pdf_destino = os.path.join(pasta_estatica_pdfs, arquivo)
+        caminho_pdf_destino = os.path.join(pasta_estatica_pdfs, nome_seguro)
         
         texto_extraido = ""
         
@@ -109,13 +114,13 @@ def processar_pdfs_locais(conn):
         resumo_bruto = texto_processado[:600] + "..." if len(texto_processado) > 10 else "Resumo não disponível para extração automática."
         
         # O link agora é a rota local servida pelo Flask
-        link_original = f"/static/pdfs/{arquivo}"
+        link_original = f"/static/pdfs/{nome_seguro}"
         data_coleta = datetime.now().strftime("%d/%m/%Y")
 
         # Geração da Capa do Artigo em Imagem (Thumbnail da 1ª Página)
-        nome_base = arquivo[:-4]
-        caminho_capa_destino = os.path.join(pasta_estatica_capas, f"{nome_base}.png")
-        link_imagem = f"/static/capas/{nome_base}.png"
+        nome_base_seguro = nome_seguro[:-4]
+        caminho_capa_destino = os.path.join(pasta_estatica_capas, f"{nome_base_seguro}.png")
+        link_imagem = f"/static/capas/{nome_base_seguro}.png"
         
         try:
             with fitz.open(caminho_pdf_entrada) as pdf_doc:
