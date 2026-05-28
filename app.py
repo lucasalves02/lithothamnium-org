@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 import sqlite3
 import os
+from pathlib import Path
 
 app = Flask(__name__)
 
@@ -8,7 +9,12 @@ app = Flask(__name__)
 def conectar_banco():
     diretorio_atual = os.path.dirname(os.path.abspath(__file__))
     caminho_banco = os.path.join(diretorio_atual, 'pesquisas.db')
-    conn = sqlite3.connect(caminho_banco)
+    
+    # Converte o caminho para URI e força o modo Somente Leitura (mode=ro)
+    # Isso previne que o SQLite tente criar arquivos temporários no sistema bloqueado da Vercel
+    caminho_uri = Path(caminho_banco).as_uri()
+    conn = sqlite3.connect(f"{caminho_uri}?mode=ro", uri=True)
+    
     conn.row_factory = sqlite3.Row 
     return conn
 
