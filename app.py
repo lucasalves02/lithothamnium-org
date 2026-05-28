@@ -1,19 +1,24 @@
 from flask import Flask, render_template
 import sqlite3
 import os
-from pathlib import Path
+import shutil
 
 app = Flask(__name__)
 
 # Função para conectar no novo banco de pesquisas
 def conectar_banco():
     diretorio_atual = os.path.dirname(os.path.abspath(__file__))
-    caminho_banco = os.path.join(diretorio_atual, 'pesquisas.db')
+    caminho_banco_original = os.path.join(diretorio_atual, 'pesquisas.db')
+    caminho_banco_tmp = '/tmp/pesquisas.db'
     
-    # Converte o caminho para URI e força o modo Somente Leitura (mode=ro)
-    # Isso previne que o SQLite tente criar arquivos temporários no sistema bloqueado da Vercel
-    caminho_uri = Path(caminho_banco).as_uri()
-    conn = sqlite3.connect(f"{caminho_uri}?mode=ro", uri=True)
+    # 1. Verifica se o banco de dados realmente subiu para o GitHub/Vercel
+    if not os.path.exists(caminho_banco_original):
+        raise FileNotFoundError("ERRO FATAL: O arquivo pesquisas.db nao foi encontrado! Ele provavelmente nao foi enviado para o GitHub.")
+        
+    # 2. Copia o banco para a pasta /tmp da Vercel (único local onde o SQLite tem total liberdade)
+    shutil.copy2(caminho_banco_original, caminho_banco_tmp)
+    
+    conn = sqlite3.connect(caminho_banco_tmp)
     
     conn.row_factory = sqlite3.Row 
     return conn
