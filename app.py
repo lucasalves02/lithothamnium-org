@@ -1,7 +1,6 @@
 from flask import Flask, render_template
 import sqlite3
 import os
-import shutil
 
 app = Flask(__name__)
 
@@ -14,8 +13,9 @@ def conectar_banco():
     if not os.path.exists(caminho_banco_original):
         raise FileNotFoundError("ERRO FATAL: O arquivo pesquisas.db nao foi encontrado! Ele provavelmente nao foi enviado para o GitHub.")
         
-    # 2. Conecta diretamente no banco original (a Vercel permite leitura sem problemas)
-    conn = sqlite3.connect(caminho_banco_original)
+    # 2. Conecta em modo read-only para ser compatível com o sistema de arquivos da Vercel.
+    db_uri = f'file:{caminho_banco_original}?mode=ro'
+    conn = sqlite3.connect(db_uri, uri=True)
     
     conn.row_factory = sqlite3.Row 
     return conn
