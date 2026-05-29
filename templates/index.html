@@ -25,7 +25,8 @@
     </nav>
 
     <!-- Hero Section -->
-    <header class="relative bg-cover bg-center" style="background-image: url('{{ url_for('static', filename='assets/topo2.jpg') }}');">
+    {% set hero_bg = url_for('static', filename='assets/topo2.jpg') %}
+    <header class="relative bg-cover bg-center" style="background-image: url('{{ hero_bg }}');">
         <!-- Overlay escuro para garantir a leitura do texto -->
         <div class="absolute inset-0 bg-black bg-opacity-60"></div>
         
